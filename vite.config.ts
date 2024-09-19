@@ -39,9 +39,10 @@ function viteBase64ImagePlugin(): Plugin {
             multipass: true,
           });
           optimized = optimizedContent.data;
-        } catch (error) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (_error) {
           console.log(
-            `Couldn't optimize ${id} SVG file. Using unoptimized version.`
+            `Couldn't optimize ${id} SVG file. Using unoptimized version.`,
           );
         }
         const svg = optimized !== null ? optimized : svgContent;
@@ -53,7 +54,7 @@ function viteBase64ImagePlugin(): Plugin {
         if ([".png", ".jpg", ".jpeg", ".gif"].includes(extension)) {
           const fileBuffer = fs.readFileSync(id);
           const base64String = `data:${mimeType};base64,${fileBuffer.toString(
-            "base64"
+            "base64",
           )}`;
           return `export default "${base64String}"`;
         }
@@ -76,6 +77,13 @@ function viteStripCommentsPlugin(): Plugin {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  css: {
+    preprocessorOptions: {
+      scss: {
+        silenceDeprecations: ["legacy-js-api"],
+      },
+    },
+  },
   plugins: [
     react(),
     viteSingleFile(),
