@@ -1,10 +1,28 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import reactLogo from "./assets/react.svg";
 import "./App.scss";
 
-function App() {
-  const [count, setCount] = useState(0);
+function App(): JSX.Element {
+  const [count, setCount] = useState<number>(0);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const handleButtonClick = useCallback((): void => {
+    setCount((count: number): number => count + 1);
+  }, []);
+
+  useEffect(() => {
+    const button = buttonRef.current;
+    if (button) {
+      button!.addEventListener("click", handleButtonClick);
+    }
+
+    return () => {
+      if (button) {
+        button!.removeEventListener("click", handleButtonClick);
+      }
+    };
+  }, [handleButtonClick]);
 
   return (
     <>
@@ -15,9 +33,7 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+        <button ref={buttonRef}>count is {count}</button>
       </div>
     </>
   );
