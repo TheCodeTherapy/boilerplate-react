@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.scss";
 
-function App(): JSX.Element {
+function App() {
   const [count, setCount] = useState<number>(0);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
